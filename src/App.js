@@ -1,8 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './App.css';
 import axios from 'axios';
-var Carousel = require('react-responsive-carousel').Carousel;
-
 
 class App extends Component {
     constructor(props) {
@@ -29,9 +27,9 @@ class App extends Component {
 
     getNewCard() {
         if (this.state.counter >= 25) {
-            return this.setState({ counter: 1 })
+            return this.setState({counter: 1})
         }
-        return this.setState({ counter: this.state.counter + 1})
+        return this.setState({counter: this.state.counter + 1})
     }
 
     getOldCard() {
@@ -40,28 +38,31 @@ class App extends Component {
         }
     }
 
+    get mainView() {
+        return this.state.data.length < 1 ? (
+            <p>Loading....</p>
+        ) : (
+            <div>
+                <p>{this.state.data[this.state.counter].data.author}</p>
+                <img alt='thumbnail' style={{height: "300px", width: "300px"}}
+                     src={this.state.data[this.state.counter].data.thumbnail}/>
+                <p>SCORE: {this.state.data[this.state.counter].data.ups}</p>
+                <button style={{fontSize: "50px"}} hidden={!this.state.counter > 0} onClick={() => this.getOldCard()}>
+                    ⬅️
+                </button>
+                <button style={{fontSize: "50px"}} onClick={() => this.getNewCard()}>➡️</button>
+            </div>
 
+        )
+    }
 
-
-  render() {
-        if (this.state.data.length < 1) {
-            return (
-                <div className="App">
-                    <p>Loading....</p>
-                </div>
-            )
-        } else {
-            return (
-                <div className="App">
-                    <p>{this.state.data[this.state.counter].data.author}</p>
-                    <img alt='thumbnail' style={{height: "300px", width: "300px"}} src={this.state.data[this.state.counter].data.thumbnail}/>
-                    <p>SCORE: {this.state.data[this.state.counter].data.ups}</p>
-                    <button style={{fontSize: "50px"}} hidden={!this.state.counter > 0} onClick={() => this.getOldCard()}>⬅️</button>
-                    <button style={{fontSize: "50px"}} onClick={() => this.getNewCard()}>➡️</button>
-                </div>
-            )
-        }
-  }
+    render() {
+        return (
+            <div className="App">
+                {this.mainView}
+            </div>
+        )
+    }
 }
 
 export default App;
